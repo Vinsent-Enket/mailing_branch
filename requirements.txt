@@ -1,0 +1,11 @@
+asgiref
+Django==4.2
+sqlparse
+psycopg2
+pillow
+ipython
+pytils
+django-crispy-forms
+crispy-bootstrap5
+pytz
+redis
