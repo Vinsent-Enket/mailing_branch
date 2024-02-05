@@ -12,6 +12,8 @@
          <h4> Клиент {{object.get_clients}} </h4>
          <h5> {{object.regularity}} </h5>
          <p> {{object.message}} </p>
+         <p> C {{object.create_date}} </p>
+         <p> До {{object.finish_date}} </p>
          <br>
      </div>
     <a class="btn btn-dark" href="{% url 'mailing_services:mailing_update' object.pk %} ">Редактировать</a>

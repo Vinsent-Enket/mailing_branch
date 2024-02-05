@@ -14,7 +14,7 @@ app.autodiscover_tasks()
 
 app.conf.beat_schedule = {
     'every': {
-        'task': 'mailing_services.tasks.repeat_order_make',
+        'task': 'mailing_services.tasks.sender_mailing',
         'schedule': crontab(), # по умолчанию выполняет каждую минуту, очень гибко
     },                                                              # настраивается
 

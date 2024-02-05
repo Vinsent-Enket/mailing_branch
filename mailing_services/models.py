@@ -53,6 +53,7 @@ class Mailing(models.Model):
     proprietor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE, verbose_name='Владелец')
     time = models.TimeField(verbose_name='время рассылки', default='9:00')
     create_date = models.DateField(auto_now_add=True, verbose_name='Дата создания')
+    finish_date = models.DateField(verbose_name='Дата окончания', default=now)
     regularity = models.CharField(choices=period, default='once_a_day', verbose_name='Периодичность')
     status = models.CharField(choices=status, max_length=50, verbose_name='Статус', default=status[0])
     client = models.ManyToManyField(Client, verbose_name='Клиент')

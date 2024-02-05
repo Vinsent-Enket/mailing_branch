@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from pytils.translit import slugify
+import django
+from django.utils import timezone
 
 from mailing_services.models import Client, Message, Mailing, MailingLogs
 
@@ -102,19 +104,12 @@ class MessageDeleteView(LoginRequiredMixin, DeleteView):
 
 class MailingCreateView(LoginRequiredMixin, CreateView):
     model = Mailing
-    fields = ('time', 'regularity', 'client', 'message')
+    fields = ('time', 'regularity', 'client', 'message', 'finish_date')
     success_url = reverse_lazy('mailing_services:mailings_list')
 
     def form_valid(self, form):
         mailing = form.save(commit=False)
-        mailing.user = self.request.user
-        mailing.status = 'created'
-        mailing.save()
-
-        message_service = MessageService(mailing)
-        send_mailing(mailing)
-        # sender()
-        message_service.create_task()
+        mailing.proprietor = self.request.user
         mailing.status = 'in_work'
         mailing.save()
 
@@ -129,11 +124,14 @@ class MailingListView(LoginRequiredMixin, ListView):
 class MailingUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('mailing_services:mailings_list')
     model = Mailing
+    from datetime import datetime
 
-    fields = ('time', 'regularity', 'client', 'message')
+
+    fields = ('time', 'regularity', 'client', 'message', 'finish_date')
 
     def form_valid(self, form):
         if form.is_valid():
+            print(self.object.proprietor)
             if self.request.user != self.object.proprietor:
                 reverse_lazy('mailing_services:clients_list')
                 print('это не твой клиент, смотри но не трогай')
