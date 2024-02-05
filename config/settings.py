@@ -48,11 +48,18 @@ INSTALLED_APPS = [
 
     'users',
     'main',
+    'blog',
+    'mailing_services',
 
+    'django_celery_beat',
+    'django_celery_results',
+    'crispy_forms',
+    'crispy_bootstrap5',
+    'django_crontab',
 
 ]
 
-#SITE_ID = 2
+# SITE_ID = 2
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
@@ -147,31 +154,44 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AUTH_USER_MODEL = 'users.User'
+AUTH_DIRECTOR_MODEL = 'users.Director'
+
 
 LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = reverse_lazy('main:main_page')
 LOGIN_URL = reverse_lazy('users:login')
 
 # email settings
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = 'smtp.yandex.ru'
-EMAIL_PORT = 465
-EMAIL_HOST_USER = os.getenv('YANDEX_LOGIN')
-EMAIL_HOST_PASSWORD = os.getenv('YANDEX_PASS')
-EMAIL_USE_TLS = False
-EMAIL_USE_SSL = True
-SERVER_EMAIL = EMAIL_HOST_USER
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+# EMAIL_HOST = 'smtp.yandex.ru'
+# EMAIL_PORT = 465
+# EMAIL_HOST_USER = os.getenv('YANDEX_LOGIN')
+# EMAIL_HOST_PASSWORD = os.getenv('YANDEX_PASS')
+# EMAIL_USE_TLS = False
+# EMAIL_USE_SSL = True
+# SERVER_EMAIL = EMAIL_HOST_USER
+# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_PORT = 2525
+EMAIL_HOST_USER = os.getenv('MAIL_RU_LOGIN')
+EMAIL_HOST_PASSWORD = os.getenv('MAIL_RU_PASSWORD')
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
 
 # Настройка celery
-CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
-CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
+CELERY_BROKER_URL = "redis://127.0.0.1:6379"
+CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379"
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Europe/Moscow'
+
+REDIS_HOST = "0.0.0.0"
+REDIS_PORT = "6379"
 
 # Настройки кэша
 CACHE_ENABLED = True
@@ -181,3 +201,12 @@ CACHES = {
         "LOCATION": "redis://127.0.0.1:6379",
     }
 }
+CELERY_CACHE_BACKEND = 'default'
+
+
+CRONJOB = [
+    ('0 12 * * *', 'mailing.cron.daily_mailings'),
+    ('0 12 * * 1', 'mailing.cron.weekly_mailings'),
+    ('0 12 1 * *', 'mailing.cron.monthly_mailings'),
+]
+

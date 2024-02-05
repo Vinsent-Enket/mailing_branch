@@ -23,6 +23,9 @@ from config import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls', namespace='main')),
+    path('users/', include('users.urls', namespace='users')),
+    path('blog/', include('blog.urls', namespace='blog')),
+    path('mailing_services/', include('mailing_services.urls', namespace='mailing_services')),
 
 ]
 if settings.DEBUG:

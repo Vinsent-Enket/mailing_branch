@@ -1,5 +1,7 @@
 {% extends 'main/base.html' %}
 {% load static %}
+{% load my_filters %}
+
 
 {% block content %}
 <p> Сервис EmailManager - это интуитивно понятный инструмент для эффективного управления email-рассылками. Он
@@ -21,4 +23,31 @@
     подписчиков.
     A/B тестирование: возможность проведения сплит-тестов для определения наиболее эффективных вариантов писем и выбора
     оптимальной стратегии рассылки.</p>
+
+<p>
+    Количество рассылок всего {{ mailing_count }}
+    Количество уникальных рассылок {{ mailing_active_count }}
+    Количество уникальных клиентов {{ users_uniq }}
+</p>
+
+{% for object in blog_news %}
+<div class="col-12">
+    <div class="card">
+        <h4 class="my-0 fw-normal"> {{object}} </h4>
+        <h1 class="card-title"> {{object.header}} </h1>
+        <h3>Количество просмотров - {{object.views_count}} </h3>
+        {% if object.images%}
+        <img src="{{ object.preview|mymedia }}" class="card-img-top" alt="..." width="500" height="600">
+        {% else %}
+        <img src="{% static 'images/apu-upal-i-uronil-edu.jpg' %}" alt="..." width="500" height="600">
+        {% endif %}
+        <p>{{ object.text|trim_to }}...смотреть продолжение в источнике</p>
+        <h4>Дата публикации {{ object.date_of_creation }}</h4>
+        <div class="btn-group" role="group" aria-label="Группа кнопок с вложенным раскрывающимся списком">
+            <a href="{% url 'blog:blog_details' object.pk %}" class="btn btn-dark">К подробностям</a>
+        </div>
+    </div>
+</div>
+
+{% endfor %}
 {% endblock %}

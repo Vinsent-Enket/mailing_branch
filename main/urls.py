@@ -9,5 +9,5 @@ from main.views import index
 app_name = MainConfig.name
 
 urlpatterns = [
-    path('index/', cache_page(60)(index), name='main_page'),
+    path('', index, name='main_page'),
 ]
