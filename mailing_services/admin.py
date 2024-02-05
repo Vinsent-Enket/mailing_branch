@@ -25,4 +25,4 @@ class MailingAdmin(admin.ModelAdmin):
 
 @admin.register(MailingLogs)
 class MailingLogsAdmin(admin.ModelAdmin):
-    list_display = ('status', 'data_time', 'server_response', 'mailing',)
+    list_display = ('status', 'data_time', 'server_response',)

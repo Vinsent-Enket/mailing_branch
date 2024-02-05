@@ -18,7 +18,7 @@ def sender():
         subject="Subject here",
         message="Here is the mailing_services.",
         from_email='2025.popov@mail.ru',
-        recipient_list=["2025.popov@mail.ru"],
+        recipient_list=["bersercer100@gmail.com"],
     )
     mailing_log = MailingLogs(
         data_time=datetime.now(),
@@ -26,8 +26,9 @@ def sender():
         server_response='Сообщение успешно отправлено',
 
     )
+    mailing_log.save()
     print("()" * 50)
-    print(mailing_log)
+    print(mailing_log.status)
     print("()" * 50)
 
 
@@ -123,7 +124,7 @@ def get_count_mailing():
 
 def get_active_mailing():
     """Возвращает количество активных рассылок"""
-    return Mailing.objects.filter(status='START').count()
+    return Mailing.objects.filter(status='in_work').count()
 
 
 def get_unique_clients():

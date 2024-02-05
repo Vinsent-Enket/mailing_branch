@@ -5,7 +5,7 @@ from pytils.translit import slugify
 
 from mailing_services.models import Client, Message, Mailing, MailingLogs
 
-from mailing_services.services import MessageService, send_mailing
+from mailing_services.services import MessageService, send_mailing, sender
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
